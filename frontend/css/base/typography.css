@@ -1,0 +1,15 @@
+:root {
+  --font-news: "Noto Serif TC", "Songti TC", "PMingLiU", serif;
+  font-family: var(--font-news);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}

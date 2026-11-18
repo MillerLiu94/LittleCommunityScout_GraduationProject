@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#343b50">
+  <meta name="description" content="社區事件載入動畫。">
+  <title>載入中</title>
+  <link rel="preload" as="image" href="../../assets/images/loading-analysis-sprite.webp">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/pages/report/status-text-animation.css">
+  <link rel="stylesheet" href="../../css/components/touch-feedback.css">
+</head>
+<body>
+  <main class="loading-screen">
+    <div class="loading-content">
+      <div class="loading-animation" role="img" aria-label="正在分析照片的動畫"></div>
+      <p class="progress-status" id="progress-status" role="status" aria-live="polite">準備開始處理照片…</p>
+      <progress id="upload-progress" max="100" value="0" hidden aria-label="照片上傳進度"></progress>
+      <div class="continue-links">
+        <button class="continue-link" id="retry-processing" type="button" hidden>重新嘗試</button>
+        <a class="continue-link secondary" href="report.html">返回照片選擇</a>
+      </div>
+    </div>
+  </main>
+  <script src="/api/runtime-config.js"></script>
+  <script src="../../api/community-api.js"></script>
+  <script src="../../js/report/report-services.js"></script>
+  <script src="../../js/common/interactions.js"></script>
+  <script src="../../js/common/main.js"></script>
+  <script src="../../js/report/report-processing.js"></script>
+</body>
+</html>

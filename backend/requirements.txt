@@ -1,0 +1,15 @@
+langgraph
+langchain-ollama
+langchain-tavily
+tavily-python
+sqlalchemy
+psycopg[binary]
+sqlglot==30.30.0
+python-dotenv
+fastapi
+uvicorn
+httpx
+itsdangerous
+python-multipart
+google-cloud-storage
+Pillow
