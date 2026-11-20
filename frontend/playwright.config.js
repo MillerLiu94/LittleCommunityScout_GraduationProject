@@ -1,14 +1,19 @@
 import { defineConfig } from "@playwright/test";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+const projectDirectory = path.basename(path.dirname(fileURLToPath(import.meta.url)));
+const baseURL = `http://127.0.0.1:5500/${projectDirectory}/`;
 
 export default defineConfig({
   testDir: "./tests",
   use: {
-    baseURL: "http://127.0.0.1:5500/LCS_project/",
+    baseURL,
     browserName: "chromium",
   },
   webServer: {
     command: "npm run dev -- --host 127.0.0.1",
-    url: "http://127.0.0.1:5500/LCS_project/index.html",
+    url: `${baseURL}index.html`,
     reuseExistingServer: !process.env.CI,
   },
 });
