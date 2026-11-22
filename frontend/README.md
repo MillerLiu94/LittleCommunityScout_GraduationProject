@@ -66,6 +66,26 @@ daisyUI 已透過 npm 安裝，可以搭配原生 CSS 使用，不需要 Tailwin
 
 例如，在 `pages/report/report.html` 使用 `../../css/daisyui.css`。之後可以使用 `<button class="btn btn-primary">按鈕</button>`，版面與間距仍可用原生 CSS 編寫。daisyUI 包含全域重設和主題樣式，且部分類別名稱可能與既有樣式重複，加入頁面後請檢查畫面。此入口由 Vite 解析 npm 套件，請透過 `npm run dev` 啟動網站。
 
+### 共用對話框
+
+依序引入 `daisyui.css`、`base/theme.css` 和 `components/modal.css`（依頁面位置調整路徑），即可使用 daisyUI 的 `modal` 結構。使用原生 `showModal()` 開啟對話框，並以標題和說明關聯提供無障礙名稱：
+
+```html
+<button class="btn" type="button" onclick="document.getElementById('confirm-dialog').showModal()">開啟</button>
+<dialog id="confirm-dialog" class="modal" aria-labelledby="confirm-title" aria-describedby="confirm-description">
+  <div class="modal-box">
+    <h2 id="confirm-title" class="modal-title">確認操作</h2>
+    <p id="confirm-description" class="modal-description">請確認是否繼續。</p>
+    <form method="dialog" class="modal-action">
+      <button class="btn" value="cancel">取消</button>
+      <button class="btn btn-primary" value="confirm">確認</button>
+    </form>
+  </div>
+</dialog>
+```
+
+關閉後可透過 `dialog.returnValue` 判斷按鈕結果；若需要執行操作，請在 `close` 事件中處理。提示視窗可只保留一個關閉按鈕。
+
 ## 專案結構
 
 ```text

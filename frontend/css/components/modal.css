@@ -1,13 +1,60 @@
-dialog {
-  max-width: min(92vw, 560px);
+.modal[open],
+.modal.modal-open {
+  background-color: rgb(12 17 27 / 64%);
+}
+
+.modal > .modal-box {
+  width: min(100% - 32px, 560px);
+  max-width: 560px;
+  max-height: calc(100dvh - 32px);
   padding: 24px;
   border: 1px solid var(--brand-line);
   border-radius: 24px;
   background: var(--brand-surface);
   color: var(--brand-page-ink);
-  box-shadow: 0 18px 48px rgba(13, 18, 29, .3);
+  box-shadow: 0 18px 48px rgb(13 18 29 / 30%);
 }
 
-dialog::backdrop {
-  background: rgba(12, 17, 27, .64);
+.modal-title {
+  margin: 0;
+  color: var(--brand-page-ink);
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.modal-description {
+  margin: 12px 0 0;
+  color: var(--brand-muted);
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.modal-box .modal-action {
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 24px;
+}
+
+.modal-box .modal-action .btn {
+  min-height: 44px;
+  border: 1px solid var(--brand-line);
+  background: var(--brand-soft);
+  color: var(--brand-page-ink);
+}
+
+.modal-box .modal-action .btn-primary {
+  border-color: var(--brand-primary);
+  background: var(--brand-primary);
+  color: var(--brand-on-primary);
+}
+
+.modal-box .btn:focus-visible {
+  outline: 2px solid var(--brand-primary);
+  outline-offset: 3px;
+}
+
+@media (max-width: 400px) {
+  .modal > .modal-box { padding: 20px; }
+  .modal-box .modal-action .btn { flex: 1 1 auto; }
 }
