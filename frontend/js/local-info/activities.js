@@ -107,6 +107,7 @@
     if (result.partial) status.textContent += "（部分來源暫時無法取得）";
     showNextPage();
   }).catch(function (error) {
+    status.setAttribute("role", "alert");
     status.textContent = error.message || "目前無法取得福利與活動資訊，請稍後重試。";
     moreButton.hidden = true;
   });

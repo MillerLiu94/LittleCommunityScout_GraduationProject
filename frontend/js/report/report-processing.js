@@ -5,8 +5,10 @@
   var message = document.getElementById("progress-status");
   var progress = document.getElementById("upload-progress");
   var retry = document.getElementById("retry-processing");
+  var spinner = document.getElementById("processing-spinner");
   if (!message || !progress || !retry) return;
   var busy = false;
+  var run = 0;
 
   function status(text, error) {
     message.textContent = text;
@@ -24,7 +26,9 @@
   function processReport() {
     if (busy) return;
     busy = true;
+    var currentRun = ++run;
     retry.hidden = true;
+    spinner.hidden = false;
     status("正在讀取申報照片…");
     progress.hidden = true;
 
@@ -57,7 +61,10 @@
 
       if (!Array.isArray(draft.uploadedPaths) || draft.uploadedPaths.length !== files.length) {
         status("正在上傳照片…");
+        progress.value = 0;
+        progress.hidden = false;
         tasks.push(flow.upload(files, function (percent) {
+          if (currentRun !== run) return;
           progress.hidden = false;
           progress.value = percent;
           progress.setAttribute("aria-label", "照片上傳進度 " + percent + "%");
@@ -67,6 +74,7 @@
             throw new Error("照片上傳結果不完整，請重試。");
           }
           flow.saveDraft({ uploadedPaths: result.paths });
+          if (currentRun === run) status("照片上傳完成，正在完成其他處理…");
         }));
       }
 
@@ -111,6 +119,9 @@
         }).then(function () { finishAt("report-review.html"); });
       });
     }).catch(function (error) {
+      run++;
+      spinner.hidden = true;
+      progress.hidden = true;
       status(error.message || "處理申報時發生錯誤，請重試。", true);
       retry.hidden = false;
     }).finally(function () {

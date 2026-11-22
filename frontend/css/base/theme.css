@@ -15,4 +15,7 @@
   --brand-control-ink: #242832;
   --brand-send-surface: #f0f1f4;
   --brand-send-ink: #252a34;
+  --brand-error: #ffd2c7;
+  --brand-error-surface: #4b3039;
+  --brand-error-line: #a66b72;
 }

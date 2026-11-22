@@ -11,6 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../../css/base/reset.css">
   <link rel="stylesheet" href="../../css/base/typography.css">
+  <link rel="stylesheet" href="../../css/daisyui.css">
   <link rel="stylesheet" href="../../css/base/theme.css">
   <link rel="stylesheet" href="../../css/layout/layout.css">
   <link rel="stylesheet" href="../../css/components/button.css">
@@ -18,6 +19,7 @@
   <link rel="stylesheet" href="../../css/components/modal.css">
   <link rel="stylesheet" href="../../css/pages/report/report-review.css">
   <link rel="stylesheet" href="../../css/components/touch-feedback.css">
+  <link rel="stylesheet" href="../../css/components/form-feedback.css">
 </head>
 <body>
   <div class="page-shell">
@@ -33,7 +35,7 @@
               <h2 class="section-title" id="location-title">已取得地理位置</h2>
               <p class="summary-value" id="location-summary">等待位置確認…</p>
             </div>
-            <a class="secondary-button" id="edit-location" href="location-edit.html">修改地理位置</a>
+            <a class="btn secondary-button" id="edit-location" href="location-edit.html">修改地理位置</a>
           </section>
 
           <section class="content-section" aria-labelledby="case-title">
@@ -57,28 +59,28 @@
               <div class="editor-row">
                 <div class="editor-frame">
                   <label class="sr-only" for="description-input">案件描述</label>
-                  <input class="editor-input" id="description-input" name="case-description" type="text" placeholder="請輸入案件描述" readonly aria-readonly="true" aria-describedby="description-error description-voice-status">
-                  <button class="voice-button" id="description-voice" type="button" disabled aria-label="語音輸入未啟用">
+                  <input class="input editor-input" id="description-input" name="case-description" type="text" placeholder="請輸入案件描述" readonly aria-readonly="true" aria-describedby="description-error description-voice-status">
+                  <button class="btn voice-button" id="description-voice" type="button" disabled aria-label="語音輸入未啟用">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3m-4 0h8"/></svg>
                   </button>
-                  <button class="apply-button" id="apply-description" type="button">修改</button>
+                  <button class="btn apply-button" id="apply-description" type="button">修改</button>
                 </div>
               </div>
             </div>
             <p class="voice-status" id="description-voice-status" aria-live="polite"></p>
-            <p class="field-error" id="description-error" role="alert"></p>
+            <p class="alert form-feedback field-error" id="description-error" role="alert"></p>
           </section>
         </div>
 
         <div class="submit-area">
-          <button class="submit-button" id="submit-case" type="button">
+          <button class="btn submit-button" id="submit-case" type="button">
             確認並送出
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
           </button>
           <p class="submit-hint">送出成功後會顯示案件編號與申報資料。</p>
         </div>
       </div>
-      <p class="submit-status" id="submit-status" role="alert" aria-live="assertive" hidden></p>
+      <p class="alert form-feedback submit-status" id="submit-status" role="alert" aria-live="assertive" hidden></p>
     </main>
   </div>
 

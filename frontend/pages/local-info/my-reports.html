@@ -17,6 +17,8 @@
   <link rel="stylesheet" href="../../css/pages/local-info/my-reports.css">
   <link rel="stylesheet" href="../../css/components/case-card.css">
   <link rel="stylesheet" href="../../css/components/touch-feedback.css">
+  <link rel="stylesheet" href="../../css/components/form-feedback.css">
+  <link rel="stylesheet" href="../../css/components/loading-feedback.css">
 </head>
 <body>
   <div class="event-frame">
@@ -33,8 +35,9 @@
       <p class="event-count sr-only" id="report-count" role="status" aria-live="polite">正在載入申報紀錄…</p>
       <section class="event-grid" id="reports-list" aria-label="我的申報事件列表"></section>
       <p class="empty-state" id="empty-state" hidden>目前還沒有申報紀錄。<a href="../report/report.html">前往申報事件</a></p>
-      <p class="event-status" id="report-status" role="status" aria-live="polite"></p>
-      <button class="retry-button" id="retry-reports" type="button" hidden>重新載入</button>
+      <div class="loading-feedback" id="report-loading" aria-hidden="true"><span class="loading loading-spinner loading-md"></span></div>
+      <p class="alert form-feedback event-status" id="report-status" role="status" aria-live="polite">正在載入申報紀錄…</p>
+      <button class="btn form-retry retry-button" id="retry-reports" type="button" hidden>重新載入</button>
     </main>
   </div>
   <script src="/api/runtime-config.js"></script>

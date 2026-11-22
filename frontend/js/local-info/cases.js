@@ -79,6 +79,7 @@
     if (busy || finished) return;
     busy = true;
     moreButton.disabled = true;
+    status.setAttribute("role", "status");
     status.textContent = "正在載入附近案件…";
     window.CommunityApi.getEvents(loaded, pageSize, { time: "all", filterRegion: region }).then(function (result) {
       var batch = Array.isArray(result) ? result : [];
@@ -89,6 +90,7 @@
       moreButton.hidden = finished;
       status.textContent = loaded ? (finished ? "已顯示全部附近案件。" : "") : "目前沒有附近案件。";
     }).catch(function (error) {
+      status.setAttribute("role", "alert");
       status.textContent = error.message || "目前無法載入案件，請稍後重試。";
       moreButton.textContent = loaded ? "重試載入" : "重新載入案件";
       moreButton.hidden = false;

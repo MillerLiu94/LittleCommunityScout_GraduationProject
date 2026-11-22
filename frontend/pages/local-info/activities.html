@@ -11,9 +11,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../../css/base/reset.css">
   <link rel="stylesheet" href="../../css/base/typography.css">
+  <link rel="stylesheet" href="../../css/daisyui.css">
   <link rel="stylesheet" href="../../css/base/theme.css">
   <link rel="stylesheet" href="../../css/pages/local-info/activities.css">
   <link rel="stylesheet" href="../../css/components/case-card.css">
+  <link rel="stylesheet" href="../../css/components/form-feedback.css">
 </head>
 <body>
   <div class="flow-shell">
@@ -34,7 +36,7 @@
       </section>
       <section class="answer-summary" aria-label="搜尋摘要">
         <span class="answer-label">資訊摘要</span>
-        <p id="activity-status" class="answer-copy" role="status" aria-live="polite"></p>
+        <p id="activity-status" class="alert form-feedback answer-copy" role="status" aria-live="polite"></p>
       </section>
       <section class="activities-grid" id="activities-list" aria-label="附近社區活動" aria-live="polite"></section>
       <div class="activities-actions">

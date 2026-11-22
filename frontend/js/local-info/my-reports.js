@@ -4,6 +4,7 @@
   var list = document.getElementById("reports-list");
   var count = document.getElementById("report-count");
   var status = document.getElementById("report-status");
+  var indicator = document.getElementById("report-loading");
   var empty = document.getElementById("empty-state");
   var retry = document.getElementById("retry-reports");
   var pageSize = 10;
@@ -106,6 +107,8 @@
   function loadNextBatch() {
     if (loading || finished) return;
     loading = true;
+    indicator.hidden = false;
+    list.setAttribute("aria-busy", "true");
     if (observer) observer.disconnect();
     retry.hidden = true;
     status.removeAttribute("data-error");
@@ -134,6 +137,8 @@
       retry.hidden = false;
     }).finally(function () {
       loading = false;
+      indicator.hidden = true;
+      list.removeAttribute("aria-busy");
     });
   }
 

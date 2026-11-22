@@ -1,0 +1,29 @@
+/* Shared daisyUI form and feedback treatments, using the project theme. */
+.form-feedback[role="alert"], .form-feedback[data-error="true"] {
+  display: block;
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid var(--brand-error-line);
+  border-radius: 12px;
+  background: var(--brand-error-surface);
+  color: var(--brand-error);
+  box-shadow: none;
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+.form-feedback:empty { display: none; }
+.form-feedback[hidden] { display: none; }
+.form-feedback:not([role="alert"]):not([data-error="true"]) {
+  display: block;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.form-feedback:not([role="alert"]):not([data-error="true"]):empty { display: none; }
+.form-retry.btn { min-height: 46px; border: 1px solid var(--brand-line); border-radius: 12px; background: var(--brand-soft); color: var(--brand-page-ink); font: inherit; font-weight: 700; }
+.form-retry.btn:hover { background: var(--brand-line); }
+.form-retry[hidden] { display: none; }
+.editor-frame:focus-within { border-color: var(--brand-primary); box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand-primary) 35%, transparent); }
+.editor-frame:has([aria-invalid="true"]) { border-color: var(--brand-error-line); }
+.editor-input.input { outline: 0; box-shadow: none; }

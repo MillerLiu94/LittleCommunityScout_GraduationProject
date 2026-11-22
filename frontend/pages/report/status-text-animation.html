@@ -10,17 +10,22 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/daisyui.css">
+  <link rel="stylesheet" href="../../css/base/theme.css">
   <link rel="stylesheet" href="../../css/pages/report/status-text-animation.css">
   <link rel="stylesheet" href="../../css/components/touch-feedback.css">
+  <link rel="stylesheet" href="../../css/components/form-feedback.css">
+  <link rel="stylesheet" href="../../css/components/loading-feedback.css">
 </head>
 <body>
   <main class="loading-screen">
     <div class="loading-content">
       <div class="loading-animation" role="img" aria-label="正在分析照片的動畫"></div>
-      <p class="progress-status" id="progress-status" role="status" aria-live="polite">準備開始處理照片…</p>
-      <progress id="upload-progress" max="100" value="0" hidden aria-label="照片上傳進度"></progress>
+      <span class="loading loading-spinner loading-md processing-spinner" id="processing-spinner" aria-hidden="true"></span>
+      <p class="alert form-feedback progress-status" id="progress-status" role="status" aria-live="polite">準備開始處理照片…</p>
+      <progress class="progress upload-progress" id="upload-progress" max="100" value="0" hidden aria-label="照片上傳進度"></progress>
       <div class="continue-links">
-        <button class="continue-link" id="retry-processing" type="button" hidden>重新嘗試</button>
+        <button class="btn form-retry continue-link" id="retry-processing" type="button" hidden>重新嘗試</button>
         <a class="continue-link secondary" href="report.html">返回照片選擇</a>
       </div>
     </div>

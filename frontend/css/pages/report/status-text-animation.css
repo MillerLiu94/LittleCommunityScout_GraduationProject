@@ -83,7 +83,7 @@
 
 .progress-status { max-width: 48ch; margin: 0; color: #e7ebf5; font: 16px/1.5 var(--font-news); }
 .progress-status[role="alert"] { color: #ffd2c7; }
-#upload-progress { width: min(100%, 440px); height: 16px; accent-color: #b7ceff; }
+#upload-progress { width: min(100%, 440px); height: 12px; }
 .continue-link { border: 0; font: inherit; cursor: pointer; }
 .continue-link:disabled { cursor: wait; opacity: .65; }
 .continue-link[hidden], #upload-progress[hidden] { display: none; }

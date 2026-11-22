@@ -1,0 +1,11 @@
+/* daisyUI loading and progress components use the shared brand palette. */
+.loading-feedback { display: flex; justify-content: center; margin: 24px auto 0; color: var(--brand-primary); }
+.loading-feedback[hidden], .processing-spinner[hidden] { display: none; }
+.processing-spinner { color: var(--brand-primary); }
+.progress.upload-progress { color: var(--brand-primary); background-color: var(--brand-soft); }
+.progress.upload-progress::-webkit-progress-bar { background-color: var(--brand-soft); border-radius: inherit; }
+.progress.upload-progress::-webkit-progress-value { background-color: var(--brand-primary); border-radius: inherit; }
+.progress.upload-progress::-moz-progress-bar { background-color: var(--brand-primary); border-radius: inherit; }
+@media (prefers-reduced-motion: reduce) {
+  .loading-feedback .loading, .processing-spinner { animation: none; }
+}

@@ -4,6 +4,7 @@
   var list = document.getElementById("events-list");
   var count = document.getElementById("event-count");
   var status = document.getElementById("event-status");
+  var indicator = document.getElementById("event-loading");
   var retry = document.getElementById("retry-events");
   var pageSize = 10;
   var loaded = 0;
@@ -107,8 +108,11 @@
   function loadNextBatch() {
     if (loading || finished) return;
     loading = true;
+    indicator.hidden = false;
+    list.setAttribute("aria-busy", "true");
     if (observer) observer.disconnect();
     retry.hidden = true;
+    status.setAttribute("role", "status");
     status.textContent = "正在載入社區事件…";
     window.CommunityApi.getEvents(loaded, pageSize, { time: "all" }).then(function (result) {
       var batch = Array.isArray(result) ? result : [];
@@ -119,10 +123,11 @@
       status.textContent = loaded ? (finished ? "已顯示全部事件。" : "") : "目前沒有社區事件。";
       if (!finished) watchNextBatch();
     }).catch(function (error) {
+      status.setAttribute("role", "alert");
       status.textContent = error.message || "目前無法載入社區事件，請稍後重試。";
       retry.textContent = loaded ? "重試載入" : "重新載入";
       retry.hidden = false;
-    }).finally(function () { loading = false; });
+    }).finally(function () { loading = false; indicator.hidden = true; list.removeAttribute("aria-busy"); });
   }
 
   observer = window.IntersectionObserver ? new IntersectionObserver(function (entries) {

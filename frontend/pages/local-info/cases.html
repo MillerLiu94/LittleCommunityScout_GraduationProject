@@ -11,10 +11,12 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../../css/base/reset.css">
   <link rel="stylesheet" href="../../css/base/typography.css">
+  <link rel="stylesheet" href="../../css/daisyui.css">
   <link rel="stylesheet" href="../../css/base/theme.css">
   <link rel="stylesheet" href="../../css/pages/local-info/cases.css">
   <link rel="stylesheet" href="../../css/components/case-card.css">
   <link rel="stylesheet" href="../../css/components/touch-feedback.css">
+  <link rel="stylesheet" href="../../css/components/form-feedback.css">
 </head>
 <body>
   <div class="flow-shell">
@@ -32,10 +34,10 @@
         <div><span class="summary-label">查詢地區</span><strong id="case-region">附近社區</strong></div>
         <span class="case-count" id="case-count" aria-live="polite">正在載入案件…</span>
       </section>
-      <p id="case-status" class="page-note" role="status" aria-live="polite"></p>
+      <p id="case-status" class="alert form-feedback page-note" role="status" aria-live="polite"></p>
       <section class="cases-grid" id="cases-list" aria-label="附近居民申報案件" aria-live="polite"></section>
       <div class="cases-actions">
-        <button class="more-button" id="show-more" type="button" aria-controls="cases-list">查看更多案件 <span aria-hidden="true">→</span></button>
+        <button class="btn form-retry more-button" id="show-more" type="button" aria-controls="cases-list">查看更多案件 <span aria-hidden="true">→</span></button>
       </div>
       <p class="page-note">顯示社區通報案件與最新處理狀態。</p>
     </main>
