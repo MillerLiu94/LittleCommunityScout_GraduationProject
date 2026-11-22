@@ -14,6 +14,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/daisyui.css">
   <link rel="stylesheet" href="css/base/reset.css">
   <link rel="stylesheet" href="css/base/typography.css">
   <link rel="stylesheet" href="css/base/theme.css">
@@ -23,6 +24,7 @@
   <link rel="stylesheet" href="css/components/modal.css">
   <link rel="stylesheet" href="css/pages/home.css">
   <link rel="stylesheet" href="css/pages/chat/multimodal.css">
+  <link rel="stylesheet" href="css/components/chat-composer.css">
   <link rel="stylesheet" href="css/components/touch-feedback.css">
 </head>
 <body>
@@ -53,12 +55,12 @@
             <form class="prompt-card" id="home-chat-form" aria-label="開始 AI 對話">
               <label class="sr-only" for="prompt">輸入您要申報或查詢的內容</label>
               <div class="attachment-tray" id="home-attachments" aria-label="已選擇的圖片" hidden></div>
-              <textarea class="prompt-placeholder" id="prompt" name="prompt" rows="1" placeholder="想聊聊生活大小事，或找找需要的服務？" aria-label="輸入訊息"></textarea>
+              <textarea class="textarea prompt-placeholder" id="prompt" name="prompt" rows="1" placeholder="想聊聊生活大小事，或找找需要的服務？" aria-label="輸入訊息"></textarea>
               <input class="sr-only" id="prompt-images" type="file" accept="image/*" multiple aria-label="選擇圖片">
               <div class="composer-actions" role="group" aria-label="輸入與送出控制">
-                <button class="composer-icon-button" id="select-image" type="button" aria-label="選擇圖片" title="選擇圖片"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
-                <button class="composer-icon-button" id="voice-input" type="button" aria-label="開始語音輸入" aria-pressed="false" title="開始語音輸入"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3m-4 0h8"/></svg></button>
-                <button class="send-control multimodal-send" id="chat-send" type="submit" aria-label="開始對話" title="開始對話"><span class="sr-only">開始對話</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></button>
+                <button class="btn btn-circle composer-icon-button" id="select-image" type="button" aria-label="選擇圖片" title="選擇圖片"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
+                <button class="btn btn-circle composer-icon-button" id="voice-input" type="button" aria-label="開始語音輸入" aria-pressed="false" title="開始語音輸入"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3m-4 0h8"/></svg></button>
+                <button class="btn btn-circle btn-primary send-control multimodal-send" id="chat-send" type="submit" aria-label="開始對話" title="開始對話"><span class="sr-only">開始對話</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></button>
               </div>
               <p class="prompt-status" id="home-chat-status" role="status" aria-live="polite"></p>
             </form>

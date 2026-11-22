@@ -1,0 +1,59 @@
+/* Shared daisyUI composer treatments for the home and chat pages. */
+:is(.app-frame, .chat-page-frame) .prompt-card {
+  border-color: var(--brand-input-line);
+  background: var(--brand-input-surface);
+  transition: border-color .2s var(--ease-out), box-shadow .2s var(--ease-out);
+}
+:is(.app-frame, .chat-page-frame) .prompt-card:focus-within {
+  border-color: var(--brand-primary);
+  box-shadow: 0 8px 28px rgb(10 22 44 / 22%), 0 0 0 3px color-mix(in srgb, var(--brand-primary) 35%, transparent);
+}
+:is(.app-frame, .chat-page-frame) .prompt-placeholder.textarea {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--brand-input-ink);
+  box-shadow: none;
+  outline: none;
+}
+:is(.app-frame, .chat-page-frame) .prompt-placeholder::placeholder { color: var(--brand-input-muted); }
+:is(.app-frame, .chat-page-frame) .composer-actions {
+  justify-content: flex-start;
+  gap: 8px;
+  padding: 0 4px 3px;
+}
+:is(.app-frame, .chat-page-frame) .composer-icon-button.btn,
+:is(.app-frame, .chat-page-frame) .multimodal-send.btn {
+  flex: 0 0 48px;
+  width: 48px;
+  min-width: 48px;
+  height: 48px;
+  min-height: 48px;
+  border: 0;
+  border-radius: 50%;
+  box-shadow: none;
+}
+:is(.app-frame, .chat-page-frame) .composer-icon-button.btn {
+  background: var(--brand-send-surface);
+  color: var(--brand-control-ink);
+}
+:is(.app-frame, .chat-page-frame) .composer-icon-button.btn:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--brand-send-surface), var(--brand-input-ink) 10%);
+}
+:is(.app-frame, .chat-page-frame) .composer-icon-button.btn[aria-pressed="true"] {
+  background: var(--brand-error-surface);
+  color: var(--brand-error);
+}
+:is(.app-frame, .chat-page-frame) .multimodal-send.btn {
+  margin-left: auto;
+  background: var(--brand-primary);
+  color: var(--brand-on-primary);
+}
+:is(.app-frame, .chat-page-frame) .multimodal-send.btn:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--brand-primary), var(--brand-input-surface) 20%);
+}
+:is(.app-frame, .chat-page-frame) .composer-actions .btn:disabled { opacity: .55; cursor: not-allowed; }
+:is(.app-frame, .chat-page-frame) .composer-actions .btn:focus-visible {
+  outline: 3px solid var(--brand-page);
+  outline-offset: 2px;
+}
