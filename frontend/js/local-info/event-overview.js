@@ -45,6 +45,7 @@
   }
   function makeCard(record) {
     var card = document.createElement("article");
+    var body = document.createElement("div");
     var top = document.createElement("div");
     var category = document.createElement("span");
     var caseStatus = document.createElement("span");
@@ -52,11 +53,12 @@
     var details = document.createElement("details");
     var summary = document.createElement("summary");
     var description = document.createElement("p");
-    card.className = "case-card";
+    card.className = "card case-card";
+    body.className = "card-body case-card__body";
     top.className = "case-card__top";
-    category.className = "case-category";
+    category.className = "badge case-category";
     category.textContent = record.type;
-    caseStatus.className = "case-status";
+    caseStatus.className = "badge case-status";
     caseStatus.textContent = record.status;
     title.className = "case-title";
     title.textContent = record.title;
@@ -66,14 +68,22 @@
     details.className = "case-details";
     details.append(summary, description);
     if (record.photo) {
+      var photoFrame = document.createElement("div");
       var photo = document.createElement("img");
       photo.src = record.photo;
       photo.alt = record.title;
       photo.loading = "lazy";
       photo.className = "case-photo";
-      card.appendChild(photo);
+      var backdrop = photo.cloneNode();
+      backdrop.className = "case-photo__backdrop";
+      backdrop.alt = "";
+      backdrop.setAttribute("aria-hidden", "true");
+      photoFrame.className = "case-photo-frame";
+      photoFrame.append(backdrop, photo);
+      card.appendChild(photoFrame);
     }
-    card.append(top, title, makeMeta("通報時間", record.date, record.iso), makeMeta("發生地點", record.place), details);
+    body.append(top, title, makeMeta("通報時間", record.date, record.iso), makeMeta("發生地點", record.place), details);
+    card.appendChild(body);
     details.addEventListener("toggle", function () {
       if (!details.open || !record.id || details.dataset.loaded) return;
       details.dataset.loaded = "true";

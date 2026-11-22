@@ -18,6 +18,7 @@ GitHub repository：[MillerLiu94/LCS_project](https://github.com/MillerLiu94/LCS
 
 - HTML、CSS、原生 JavaScript
 - [Vite](https://vite.dev/) 開發伺服器
+- [daisyUI](https://daisyui.com/) 元件樣式（按頁面選擇引入）
 - Google Maps JavaScript API（選用）
 
 ## 環境需求
@@ -53,6 +54,17 @@ npm run dev
 ```
 
 開啟終端機顯示的網址。若透過開發隧道存取，請將隧道主機名稱填入 `DEV_TUNNEL_HOST`。
+
+## 使用 daisyUI
+
+daisyUI 已透過 npm 安裝，可以搭配原生 CSS 使用，不需要 Tailwind CSS。在需要使用元件的 HTML 頁面，於自己的樣式表之前引入以下檔案；路徑請依頁面位置調整：
+
+```html
+<!-- 首頁 index.html -->
+<link rel="stylesheet" href="css/daisyui.css">
+```
+
+例如，在 `pages/report/report.html` 使用 `../../css/daisyui.css`。之後可以使用 `<button class="btn btn-primary">按鈕</button>`，版面與間距仍可用原生 CSS 編寫。daisyUI 包含全域重設和主題樣式，且部分類別名稱可能與既有樣式重複，加入頁面後請檢查畫面。此入口由 Vite 解析 npm 套件，請透過 `npm run dev` 啟動網站。
 
 ## 專案結構
 

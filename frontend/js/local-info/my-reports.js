@@ -64,6 +64,7 @@
 
   function makeCard(record) {
     var card = document.createElement("article");
+    var body = document.createElement("div");
     var top = document.createElement("div");
     var category = document.createElement("span");
     var caseStatus = document.createElement("span");
@@ -71,11 +72,12 @@
     var details = document.createElement("details");
     var summary = document.createElement("summary");
     var description = document.createElement("p");
-    card.className = "case-card";
+    card.className = "card case-card";
+    body.className = "card-body case-card__body";
     top.className = "case-card__top";
-    category.className = "case-category";
+    category.className = "badge case-category";
     category.textContent = record.category;
-    caseStatus.className = "case-status";
+    caseStatus.className = "badge case-status";
     caseStatus.textContent = record.status;
     title.className = "case-title";
     title.textContent = record.title;
@@ -84,7 +86,8 @@
     description.textContent = record.detail;
     top.append(category, caseStatus);
     details.append(summary, description);
-    card.append(top, title, makeMeta("申報時間", record.reportedAt), makeMeta("發生地點", record.place), details);
+    body.append(top, title, makeMeta("申報時間", record.reportedAt), makeMeta("發生地點", record.place), details);
+    card.appendChild(body);
     return card;
   }
 
