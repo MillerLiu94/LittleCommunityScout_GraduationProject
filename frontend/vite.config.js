@@ -1,6 +1,7 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { defineConfig, loadEnv } from "vite";
+import { mockAuth } from "./scripts/mock-auth.js";
 
 const previewRoot = path.dirname(fileURLToPath(import.meta.url));
 const siteRoot = path.resolve(previewRoot, "..");
@@ -8,7 +9,8 @@ const projectDirectory = path.basename(previewRoot);
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, previewRoot, "");
-  const configuredApi = env.API_BASE_URL;
+  const isMock = mode === "mock";
+  const configuredApi = env.API_BASE_URL || (isMock ? "http://127.0.0.1:9" : "");
   if (!configuredApi) throw new Error("Set API_BASE_URL in .env.");
 
   const apiUrl = new URL(configuredApi);
@@ -23,6 +25,7 @@ export default defineConfig(({ mode }) => {
     root: siteRoot,
     envDir: previewRoot,
     plugins: [
+      ...(isMock ? [mockAuth()] : []),
       {
         name: "preview-root-redirect",
         configureServer(server) {
@@ -47,7 +50,7 @@ export default defineConfig(({ mode }) => {
       },
     ],
     server: {
-      host: "0.0.0.0",
+      host: isMock ? "127.0.0.1" : "0.0.0.0",
       port: 5500,
       strictPort: true,
       open: `/${projectDirectory}/index.html`,

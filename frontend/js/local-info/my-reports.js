@@ -132,9 +132,10 @@
       status.textContent = finished ? "已顯示全部申報紀錄" : "";
       window.ReportFilters.refresh(finished);
       if (!finished) watchNextBatch();
-    }).catch(function () {
+    }).catch(function (error) {
       status.dataset.error = "true";
-      status.textContent = "目前無法取得您的申報紀錄，請稍後重試。";
+      status.textContent = error.status === 401 && window.CommunityConfig && window.CommunityConfig.mockAuth === true
+        ? error.message : "目前無法取得您的申報紀錄，請稍後重試。";
       retry.textContent = "重試載入";
       retry.hidden = false;
     }).finally(function () {

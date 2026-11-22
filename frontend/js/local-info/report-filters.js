@@ -6,7 +6,10 @@
   var keyword = document.getElementById("filter-keyword");
   var feedback = document.getElementById("filter-feedback");
   var empty = document.getElementById("filter-empty");
-  var list = document.getElementById("reports-list");
+  var isEvents = form.dataset.scope === "events";
+  var list = document.getElementById(isEvents ? "events-list" : "reports-list");
+  var count = document.getElementById(isEvents ? "event-count" : "report-count");
+  var label = isEvents ? "社區事件" : "申報紀錄";
   var records = [];
   var changed = function () {};
   function active() { return Boolean(status.value || category.value || keyword.value.trim()); }
@@ -27,12 +30,12 @@
     });
     empty.hidden = !active() || !finished || visible > 0;
     document.getElementById("empty-state").hidden = active() || records.length > 0 || !finished;
-    document.getElementById("report-count").textContent = "目前顯示 " + visible + " 筆申報紀錄";
+    count.textContent = "目前顯示 " + visible + " 筆" + label;
   }
   form.addEventListener("submit", function (event) { event.preventDefault(); });
   form.addEventListener("input", function () { feedback.textContent = ""; changed(); });
   document.getElementById("copy-filter").addEventListener("click", function () {
-    var text = "我的申報篩選條件：案件狀態：" + (status.value || "全部") + "；事件類別：" + (category.value || "全部") + "；關鍵字：" + (keyword.value.trim() || "無");
+    var text = (isEvents ? "社區事件" : "我的申報") + "篩選條件：案件狀態：" + (status.value || "全部") + "；事件類別：" + (category.value || "全部") + "；關鍵字：" + (keyword.value.trim() || "無");
     if (!navigator.clipboard || !navigator.clipboard.writeText) { feedback.textContent = "無法複製，請確認瀏覽器剪貼簿權限。"; return; }
     navigator.clipboard.writeText(text).then(function () { feedback.textContent = "已複製篩選條件，可貼到 AI 小助理。"; }).catch(function () { feedback.textContent = "複製失敗，請確認瀏覽器剪貼簿權限。"; });
   });

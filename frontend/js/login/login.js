@@ -7,6 +7,7 @@ window.CommunityAuth.initialize("login").then(() => {
   const result = window.CommunityAuth.callbackResult();
   if (result === "failed") statusMessage.textContent = "登入未完成，請再試一次。";
   if (result === "invalid") statusMessage.textContent = "無法確認登入身分，請重新選擇身分登入。";
+  if (result === "reauth") statusMessage.textContent = "無法確認此功能的登入狀態，請重新登入。";
 }).catch(() => {
   statusMessage.textContent = "目前無法連線到登入服務，請稍後再試。";
 });
@@ -30,6 +31,7 @@ lineLogin.addEventListener("click", () => {
   }
   try {
     const loginUrl = window.CommunityApi.getLineLoginUrl(selectedRole);
+    window.CommunityAuth.clearReauthentication();
     statusMessage.textContent = "正在前往登入服務…";
     window.location.assign(loginUrl);
   } catch (error) {

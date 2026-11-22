@@ -21,6 +21,7 @@
     return {
       id: event.id,
       type: event.type || "社區事件",
+      category: event.type || "社區事件",
       title: event.title || "社區事件",
       date: event.timeText || (date && !isNaN(date.getTime()) ? new Intl.DateTimeFormat("zh-TW", { dateStyle: "medium", timeStyle: "short" }).format(date) : "時間未提供"),
       iso: date && !isNaN(date.getTime()) ? date.toISOString() : "",
@@ -100,8 +101,8 @@
   }
   function watchNextBatch() {
     if (observer) observer.disconnect();
-    if (finished) return;
-    if (!window.IntersectionObserver) { retry.hidden = false; return; }
+    if (finished || window.ReportFilters.active()) return;
+    if (!window.IntersectionObserver) { retry.textContent = "載入更多事件"; retry.hidden = false; return; }
     var trigger = list.children[Math.min(list.children.length - 1, Math.max(0, loaded - pageSize + 6))];
     if (trigger) observer.observe(trigger);
   }
@@ -116,23 +117,34 @@
     status.textContent = "正在載入社區事件…";
     window.CommunityApi.getEvents(loaded, pageSize, { time: "all" }).then(function (result) {
       var batch = Array.isArray(result) ? result : [];
-      batch.map(normalizeEvent).forEach(function (record) { list.appendChild(makeCard(record)); });
+      batch.map(normalizeEvent).forEach(function (record) { window.ReportFilters.add(record, makeCard(record)); });
       loaded += batch.length;
       count.textContent = "目前顯示 " + loaded + " 筆社區事件";
       finished = batch.length < pageSize;
-      status.textContent = loaded ? (finished ? "已顯示全部事件。" : "") : "目前沒有社區事件。";
+      status.textContent = loaded && finished ? "已顯示全部事件。" : "";
+      window.ReportFilters.refresh(finished);
       if (!finished) watchNextBatch();
     }).catch(function (error) {
       status.setAttribute("role", "alert");
       status.textContent = error.message || "目前無法載入社區事件，請稍後重試。";
       retry.textContent = loaded ? "重試載入" : "重新載入";
       retry.hidden = false;
-    }).finally(function () { loading = false; indicator.hidden = true; list.removeAttribute("aria-busy"); });
+    }).finally(function () {
+      loading = false;
+      indicator.hidden = true;
+      list.removeAttribute("aria-busy");
+      if (!finished && window.ReportFilters.active() && retry.hidden) loadNextBatch();
+    });
   }
 
   observer = window.IntersectionObserver ? new IntersectionObserver(function (entries) {
     if (entries.some(function (entry) { return entry.isIntersecting; })) loadNextBatch();
   }, { rootMargin: "0px", threshold: 0.8 }) : null;
+  window.ReportFilters.onChange(function () {
+    window.ReportFilters.refresh(finished);
+    if (window.ReportFilters.active()) loadNextBatch();
+    else watchNextBatch();
+  });
   retry.addEventListener("click", loadNextBatch);
   loadNextBatch();
 })();

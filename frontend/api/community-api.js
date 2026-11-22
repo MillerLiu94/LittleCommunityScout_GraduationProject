@@ -31,16 +31,25 @@
     });
   }
 
-  function redirectToLogin() {
+  function redirectToLogin(reauthenticate) {
     var loginUrl = new URL("pages/login/login.html", appRoot);
     if (location.pathname === loginUrl.pathname) return;
-    try { sessionStorage.setItem("communityAuthReturnTo", location.pathname + location.search + location.hash); } catch (_) {}
+    try {
+      sessionStorage.setItem("communityAuthReturnTo", location.pathname + location.search + location.hash);
+      if (reauthenticate) sessionStorage.setItem("communityAuthReauthenticate", "1");
+    } catch (_) {
+      if (reauthenticate) loginUrl.searchParams.set("reauth", "1");
+    }
     global.location.assign(loginUrl.href);
   }
 
   function protectedRequest(promise) {
     return promise.catch(function (error) {
-      if (error.status === 401) redirectToLogin();
+      if (error.status === 401 && config.mockAuth === true) {
+        error.message = "模擬使用者沒有後端登入狀態，無法使用此功能。";
+      } else if (error.status === 401) {
+        redirectToLogin(true);
+      }
       throw error;
     });
   }

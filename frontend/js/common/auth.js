@@ -6,11 +6,16 @@
   var callbackResult = "";
   var currentUser = null;
 
+  function clearReauthentication() {
+    try { sessionStorage.removeItem("communityAuthReauthenticate"); } catch (_) {}
+  }
+
   function processCallback() {
     var params = new URLSearchParams(location.search);
     var result = params.get("login");
     if (result === "success" || result === "failed" || params.has("reason")) {
       callbackResult = result === "failed" || params.has("reason") ? "failed" : "success";
+      if (callbackResult === "success") clearReauthentication();
       params.delete("login");
       params.delete("role");
       params.delete("reason");
@@ -30,12 +35,15 @@
     processCallback();
     return global.CommunityApi.getCurrentUser().then(function (user) {
       currentUser = user;
-      if (page === "login" && callbackResult !== "failed") returnAfterLogin();
+      var reauthenticate = new URLSearchParams(location.search).get("reauth") === "1";
+      try { reauthenticate = reauthenticate || sessionStorage.getItem("communityAuthReauthenticate") === "1"; } catch (_) {}
+      if (page === "login" && reauthenticate && !callbackResult) callbackResult = "reauth";
+      if (page === "login" && callbackResult !== "failed" && callbackResult !== "reauth") returnAfterLogin();
       return user;
     }).catch(function (error) {
       currentUser = null;
-      if (page === "home" && error.status === 401) global.CommunityApi.redirectToLogin();
-      if (page === "protected" && error.status === 401) global.CommunityApi.redirectToLogin();
+      if ((page === "home" || page === "protected") && error.status === 401) global.CommunityApi.redirectToLogin(true);
+      if (page === "login" && error.status === 401) clearReauthentication();
       if (page === "login" && callbackResult === "success" && error.status === 401) callbackResult = "invalid";
       if (page === "login" && error.status && error.status !== 401) throw error;
       return null;
@@ -45,6 +53,7 @@
   global.CommunityAuth = {
     initialize: initialize,
     read: function () { return currentUser; },
+    clearReauthentication: clearReauthentication,
     callbackResult: function () { return callbackResult; },
   };
 })(window);

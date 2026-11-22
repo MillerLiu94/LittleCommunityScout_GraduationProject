@@ -14,10 +14,14 @@
   <link rel="stylesheet" href="../../css/daisyui.css">
   <link rel="stylesheet" href="../../css/base/theme.css">
   <link rel="stylesheet" href="../../css/pages/local-info/event-overview.css">
+  <link rel="stylesheet" href="../../css/pages/local-info/my-reports.css">
   <link rel="stylesheet" href="../../css/components/case-card.css">
   <link rel="stylesheet" href="../../css/components/touch-feedback.css">
   <link rel="stylesheet" href="../../css/components/form-feedback.css">
   <link rel="stylesheet" href="../../css/components/loading-feedback.css">
+  <link rel="stylesheet" href="../../css/pages/chat/stream-chat.css">
+  <link rel="stylesheet" href="../../css/pages/chat/multimodal.css">
+  <link rel="stylesheet" href="../../css/pages/local-info/my-reports-tools.css">
 </head>
 <body>
   <div class="event-frame">
@@ -28,17 +32,50 @@
         回首頁
       </a>
     </header>
-    <main class="event-main">
+    <main class="event-main my-reports-main">
       <h1>社區事件總覽</h1>
+      <p class="page-description">瀏覽社區事件與處理進度。</p>
+      <form class="report-filters" id="report-filters" aria-label="篩選社區事件" data-scope="events">
+        <label>案件狀態<select class="select select-bordered" id="filter-status"><option value="">全部狀態</option></select></label>
+        <label>事件類別<select class="select select-bordered" id="filter-category"><option value="">全部類別</option></select></label>
+        <label class="filter-search">關鍵字<input class="input input-bordered" id="filter-keyword" type="search" placeholder="搜尋事件、地點或描述"></label>
+        <button class="btn filter-copy" id="copy-filter" type="button">複製篩選條件</button>
+        <p id="filter-feedback" role="status" aria-live="polite"></p>
+      </form>
       <p class="event-count sr-only" id="event-count" role="status" aria-live="polite">正在載入社區事件…</p>
       <section class="event-grid" id="events-list" aria-label="社區事件列表"></section>
+      <p class="empty-state" id="empty-state" hidden>目前沒有社區事件。</p>
+      <p class="empty-state" id="filter-empty" hidden>沒有符合篩選條件的社區事件。</p>
       <div class="loading-feedback" id="event-loading" hidden aria-hidden="true"><span class="loading loading-spinner loading-md"></span></div>
       <p class="alert form-feedback event-status" id="event-status" role="status" aria-live="polite"></p>
-      <button class="btn form-retry retry-button" id="retry-events" type="button" hidden>載入更多活動</button>
+      <button class="btn form-retry retry-button" id="retry-events" type="button" hidden>載入更多事件</button>
     </main>
   </div>
+  <aside class="report-assistant" aria-label="AI 小助理">
+    <section class="assistant-panel card" id="assistant-panel" aria-label="AI 小助理對話" hidden>
+      <header class="assistant-header"><div><strong>AI 生活助理</strong><p id="connection-status">準備為您服務</p></div><button class="btn btn-ghost" id="clear-chat" type="button">新對話</button><button class="btn btn-ghost btn-circle" id="assistant-close" type="button" aria-label="關閉 AI 小助理">×</button></header>
+      <div class="chat-scroll" id="chat-scroll"><div id="welcome-card" class="assistant-welcome">有什麼需要協助的嗎？可以輸入問題，或貼上篩選條件一起討論。</div><div class="message-list" id="message-list" role="log" aria-label="對話訊息"></div></div>
+      <p class="assistant-status" id="chat-status" role="status" aria-live="polite">AI 生成的內容可能有誤，請自行確認重要資訊。</p>
+      <form class="assistant-composer" id="home-chat-form" aria-label="AI 對話輸入">
+        <div class="attachment-tray" id="chat-attachments" aria-label="已選擇的圖片" hidden></div>
+        <label class="sr-only" for="prompt">輸入訊息</label><textarea class="textarea" id="prompt" rows="2" placeholder="輸入訊息或貼上篩選條件"></textarea>
+        <input class="sr-only" id="chat-images" type="file" accept="image/*" multiple aria-label="選擇圖片">
+        <div class="assistant-actions"><button class="btn btn-circle" id="chat-select-image" type="button" aria-label="新增圖片" title="新增圖片">＋</button><button class="btn btn-circle" id="chat-voice-input" type="button" aria-label="開始語音輸入" aria-pressed="false" title="開始語音輸入"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3m-4 0h8"/></svg></button><button class="btn btn-circle" id="chat-send" type="submit" aria-label="送出訊息"></button></div>
+      </form>
+    </section>
+    <button class="btn assistant-toggle" id="assistant-toggle" type="button" aria-expanded="false" aria-controls="assistant-panel"><span aria-hidden="true">✦</span> AI 小助理</button>
+  </aside>
   <script src="/api/runtime-config.js"></script>
   <script src="../../api/community-api.js"></script>
+  <script src="../../js/common/auth.js?v=6"></script>
+  <script src="../../api/chat-api.js"></script>
+  <script src="../../js/common/audio-recorder.js"></script>
+  <script src="../../js/chat/chat-stream.js"></script>
+  <script src="../../js/chat/chat-messages.js"></script>
+  <script src="../../js/chat/chat-multimodal.js"></script>
+  <script src="../../js/chat/chat-page.js"></script>
+  <script src="../../js/local-info/report-filters.js"></script>
   <script src="../../js/local-info/event-overview.js"></script>
+  <script src="../../js/local-info/report-assistant.js"></script>
 </body>
 </html>
