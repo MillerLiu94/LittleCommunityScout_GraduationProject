@@ -64,9 +64,9 @@ from app.welfare import WelfareSearchError, search_welfare
 from app.weather import WeatherProviderError, get_weather
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-# 新前端是 monorepo 根目錄的 LCS_project/。有 build 過的 dist 就優先服務，
+# 新前端是 monorepo 根目錄的 frontend/。有 build 過的 dist 就優先服務，
 # 否則直接服務原始靜態檔（這個前端是原生 HTML/CSS/JS，不需要建置也能跑）。
-FRONTEND_DIR = BASE_DIR.parent / "LCS_project"
+FRONTEND_DIR = BASE_DIR.parent / "frontend"
 FRONTEND_DIST = FRONTEND_DIR / "dist"
 FRONTEND_INDEX = "index.html"
 
@@ -370,7 +370,7 @@ def _sse(event: str, **data) -> str:
 def runtime_config():
     """提供新前端 api/runtime-config.js 的內容。
 
-    LCS_project 原本靠 PowerShell 腳本產生這個檔；由後端同源服務時直接動態回傳，
+    frontend 原本靠 PowerShell 腳本產生這個檔；由後端同源服務時直接動態回傳，
     前端不需要改程式碼，也不需要另外執行腳本。
     """
     config = {
@@ -699,12 +699,12 @@ app.mount("/uploads", StaticFiles(directory=LOCAL_UPLOAD_DIR), name="uploads")
 
 @app.get("/")
 def index():
-    """根路徑直接服務 LCS_project 新前端。"""
+    """根路徑直接服務 frontend 新前端。"""
     root = _frontend_root()
     if root is not None:
         return FileResponse(root / FRONTEND_INDEX)
     return JSONResponse(
-        {"detail": "前端尚未設定：找不到 LCS_project/index.html。"},
+        {"detail": "前端尚未設定：找不到 frontend/index.html。"},
         status_code=404,
     )
 
@@ -714,10 +714,10 @@ def spa_fallback(full_path: str):
     """前端路由 fallback：認得的靜態檔直接回，其餘回 index.html。
 
     註冊在所有 route / mount 之後（/api、/uploads），才不會蓋掉後端路由。
-    LCS_project 不在時回 404，後端仍可單獨啟動。
+    frontend 不在時回 404，後端仍可單獨啟動。
     """
     if full_path == "api" or full_path.startswith("api/"):
-        # LCS_project 的 api/community-api.js 等前端檔案也掛在 /api 底下；
+        # frontend 的 api/community-api.js 等前端檔案也掛在 /api 底下；
         # 先讓實際存在的靜態檔通過，其餘才當成不存在的 API。
         shared = _frontend_file(full_path)
         if shared is not None:
@@ -726,7 +726,7 @@ def spa_fallback(full_path: str):
     root = _frontend_root()
     if root is None:
         return JSONResponse(
-            {"detail": "前端尚未設定：找不到 LCS_project/index.html。"},
+            {"detail": "前端尚未設定：找不到 frontend/index.html。"},
             status_code=404,
         )
 

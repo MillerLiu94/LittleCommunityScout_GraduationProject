@@ -33,7 +33,7 @@
 | GET | `/api/places/reverse?lat=&lng=` | 座標反查地址（Google Geocoding API） | GPS／地圖位置確認 |
 | POST | `/api/chat` | 社區小尖兵 AI 聊天（Supervisor 多智能體，與 `main.py` 同一個 Agent） | — |
 | POST | `/api/chat/stream` | 同上，但以 SSE 逐步送進度事件 | 右下角浮動對話框 |
-| GET | `/api/runtime-config.js` | 提供新前端（LCS_project）執行期設定 | 所有頁面載入時 |
+| GET | `/api/runtime-config.js` | 提供新前端（frontend）執行期設定 | 所有頁面載入時 |
 | POST | `/api/transcribe` | 瀏覽器錄音轉文字（proxy 到語音模型） | 申報回顧頁麥克風按鈕 |
 
 登入改用 LINE Login OAuth。`/api/auth/line/login` 會以瀏覽器導向 LINE；callback 成功後由後端建立 HttpOnly session cookie，再導回前端登入頁。`POST /api/cases`、`GET /api/cases`、`POST /api/uploads` 需要有效的登入 session，未登入會回 `401`。
@@ -299,7 +299,7 @@ curl -k -b cookies.txt 'https://cachyos-x8664.tail3babf5.ts.net/api/cases?limit=
 
 ## 5.5 GET /api/runtime-config.js
 
-新前端（`LCS_project/`）在每個頁面載入 `api/runtime-config.js`。由後端同源服務時，這個端點會動態產生該檔，前端不需要修改程式碼，也不必執行原本的 PowerShell 產生腳本。
+新前端（`frontend/`）在每個頁面載入 `api/runtime-config.js`。由後端同源服務時，這個端點會動態產生該檔，前端不需要修改程式碼，也不必執行原本的 PowerShell 產生腳本。
 
 - **後端**：`app/server.py:runtime_config()`
 - **回傳**：`application/javascript`
@@ -700,7 +700,7 @@ curl -k -X POST https://cachyos-x8664.tail3babf5.ts.net/api/transcribe   -F "fil
 
 | Path | 說明 |
 |------|------|
-| `GET /` | 回傳 `LCS_project/index.html`；找不到前端時回 `404` |
+| `GET /` | 回傳 `frontend/index.html`；找不到前端時回 `404` |
 | `GET /uploads/{object_path}` | `STORAGE_BACKEND=local` 時，回傳上傳的圖片本體 |
 | `https://storage.googleapis.com/my-report-image/{object_path}` | `STORAGE_BACKEND=gcs` 時的圖片公開網址 |
 
