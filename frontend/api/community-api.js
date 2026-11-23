@@ -45,8 +45,8 @@
 
   function protectedRequest(promise) {
     return promise.catch(function (error) {
-      if (error.status === 401 && config.mockAuth === true) {
-        error.message = "模擬使用者沒有後端登入狀態，無法使用此功能。";
+      if (error.status === 401 && global.CommunityAuth && global.CommunityAuth.isTester()) {
+        error.message = "測試人員沒有後端登入狀態，無法使用此功能。";
       } else if (error.status === 401) {
         redirectToLogin(true);
       }

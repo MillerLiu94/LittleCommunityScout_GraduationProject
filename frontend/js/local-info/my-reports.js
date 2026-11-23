@@ -134,7 +134,7 @@
       if (!finished) watchNextBatch();
     }).catch(function (error) {
       status.dataset.error = "true";
-      status.textContent = error.status === 401 && window.CommunityConfig && window.CommunityConfig.mockAuth === true
+      status.textContent = error.status === 401 && window.CommunityAuth.isTester()
         ? error.message : "目前無法取得您的申報紀錄，請稍後重試。";
       retry.textContent = "重試載入";
       retry.hidden = false;

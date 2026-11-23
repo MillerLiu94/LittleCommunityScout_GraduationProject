@@ -6,6 +6,24 @@
   var callbackResult = "";
   var currentUser = null;
 
+  function isTester() {
+    try { return sessionStorage.getItem("communityTester") === "1"; } catch (_) { return false; }
+  }
+
+  function testerLogin() {
+    try {
+      sessionStorage.setItem("communityTester", "1");
+      sessionStorage.removeItem("communityAuthReturnTo");
+      clearReauthentication();
+      global.location.assign(new URL("index.html", appRoot).href);
+    } catch (_) { return false; }
+    return true;
+  }
+
+  function clearTester() {
+    try { sessionStorage.removeItem("communityTester"); } catch (_) {}
+  }
+
   function clearReauthentication() {
     try { sessionStorage.removeItem("communityAuthReauthenticate"); } catch (_) {}
   }
@@ -33,6 +51,10 @@
 
   function initialize(page) {
     processCallback();
+    if (page !== "login" && isTester()) {
+      currentUser = { id: "tester", name: "測試人員", role: "tester" };
+      return Promise.resolve(currentUser);
+    }
     return global.CommunityApi.getCurrentUser().then(function (user) {
       currentUser = user;
       var reauthenticate = new URLSearchParams(location.search).get("reauth") === "1";
@@ -54,6 +76,9 @@
     initialize: initialize,
     read: function () { return currentUser; },
     clearReauthentication: clearReauthentication,
+    isTester: isTester,
+    testerLogin: testerLogin,
+    clearTester: clearTester,
     callbackResult: function () { return callbackResult; },
   };
 })(window);

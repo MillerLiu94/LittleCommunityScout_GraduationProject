@@ -3,14 +3,14 @@
 .report-filters .filter-search { flex: 2 1 220px; }
 .report-filters .select, .report-filters .input { width: 100%; min-height: 46px; border-color: var(--brand-input-line); background: var(--brand-input-surface); color: var(--brand-input-ink); font-size: .86rem; }
 .report-filters .input::placeholder { color: var(--brand-input-muted); }
-.filter-copy, .assistant-toggle { min-height: 46px; border: 0; background: var(--brand-primary); color: var(--brand-on-primary); }
+.filter-copy { min-height: 46px; border: 0; background: var(--brand-primary); color: var(--brand-on-primary); }
 #filter-feedback { flex-basis: 100%; margin: 0; color: var(--brand-muted); font-size: .76rem; }
 #filter-feedback:empty { display: none; }
 .case-card[hidden], .assistant-panel[hidden] { display: none; }
 .report-assistant { position: fixed; z-index: 20; right: 24px; bottom: 24px; display: flex; width: min(390px, calc(100vw - 32px)); flex-direction: column; align-items: end; gap: 12px; }
-.assistant-toggle { border-radius: 999px; padding: 0 20px; box-shadow: 0 8px 24px rgb(0 0 0 / 25%); }
-.assistant-toggle span { font-size: 1.2rem; }
-.assistant-panel { display: flex; width: 100%; height: min(570px, calc(100dvh - 110px)); flex-direction: column; overflow: hidden; border: 1px solid var(--brand-line); border-radius: 22px; background: var(--brand-surface); color: var(--brand-page-ink); box-shadow: 0 16px 40px rgb(0 0 0 / 30%); text-align: left; }
+.assistant-toggle.btn { width: 112px; height: 112px; min-height: 112px; padding: 0; border: 0; border-radius: 0; background: transparent url("../../../assets/images/AI小助理_normal.webp") center / contain no-repeat; box-shadow: none; }
+.assistant-toggle.btn:hover, .assistant-toggle.btn:focus-visible { background-image: url("../../../assets/images/AI小助理_hover.webp"); }
+.assistant-panel { display: flex; width: 100%; height: min(570px, calc(100dvh - 160px)); flex-direction: column; overflow: hidden; border: 1px solid var(--brand-line); border-radius: 22px; background: var(--brand-surface); color: var(--brand-page-ink); box-shadow: 0 16px 40px rgb(0 0 0 / 30%); text-align: left; }
 .assistant-header { display: flex; align-items: center; gap: 6px; padding: 12px 14px; border-bottom: 1px solid var(--brand-line); }
 .assistant-header > div { flex: 1; }
 .assistant-header strong { font-size: .95rem; }

@@ -1,5 +1,6 @@
 const roleOptions = Array.from(document.querySelectorAll("[data-role]"));
 const lineLogin = document.querySelector(".line-login");
+const testerLogin = document.querySelector(".tester-login");
 const statusMessage = document.querySelector("#login-status");
 let selectedRole = "";
 
@@ -31,10 +32,15 @@ lineLogin.addEventListener("click", () => {
   }
   try {
     const loginUrl = window.CommunityApi.getLineLoginUrl(selectedRole);
+    window.CommunityAuth.clearTester();
     window.CommunityAuth.clearReauthentication();
     statusMessage.textContent = "正在前往登入服務…";
     window.location.assign(loginUrl);
   } catch (error) {
     statusMessage.textContent = "登入服務設定不完整，請稍後再試。";
   }
+});
+
+testerLogin.addEventListener("click", () => {
+  if (!window.CommunityAuth.testerLogin()) statusMessage.textContent = "無法儲存測試登入狀態，請檢查瀏覽器設定。";
 });
