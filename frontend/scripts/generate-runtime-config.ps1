@@ -9,7 +9,7 @@ if (-not (Test-Path -LiteralPath $outputDirectory)) {
 }
 
 if (-not (Test-Path -LiteralPath $environmentFile)) {
-  throw "Missing preview/.env. Copy .env.example to .env and configure it first."
+  throw "Missing frontend/.env. Copy .env.example to .env and configure it first."
 }
 
 $environment = @{}

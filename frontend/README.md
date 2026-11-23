@@ -30,13 +30,13 @@ GitHub repository：[MillerLiu94/LCS_project](https://github.com/MillerLiu94/LCS
 ## 本機啟動
 
 ```powershell
-git clone https://github.com/MillerLiu94/LCS_project.git preview
-cd preview
+git clone https://github.com/MillerLiu94/LCS_project.git
+cd LCS_project/frontend
 npm ci
 Copy-Item .env.example .env
 ```
 
-請保留資料夾名稱 `preview`；目前 Vite 設定會從此資料夾的上一層提供 `/preview/` 網址。
+Vite 會從 `frontend` 的上一層提供網站，首頁網址為 `/frontend/index.html`。
 
 編輯 `.env`，至少設定後端網址：
 
@@ -54,6 +54,12 @@ npm run dev
 ```
 
 開啟終端機顯示的網址。若透過開發隧道存取，請將隧道主機名稱填入 `DEV_TUNNEL_HOST`。
+
+### 測試人員登入
+
+以 `npm run dev` 啟動後，在登入頁選擇「測試人員登入」即可直接進入首頁，無需 LINE。測試身分保存在目前的瀏覽器分頁，關閉分頁後結束；選擇 LINE 登入也會清除測試身分。
+
+測試身分只供前端使用，**不會建立後端 session，也不會模擬 API**。案件查詢、照片上傳和送出申報等仍需要後端及有效的後端登入；其他需要 API 的功能也需要相容的後端。
 
 ## 使用 daisyUI
 
