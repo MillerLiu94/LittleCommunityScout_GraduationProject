@@ -49,5 +49,6 @@ test("附近案件頁只顯示選定地區的案件", async ({ page }) => {
 
   await expect(page.locator("#case-region")).toHaveText(selectedRegion);
   await expect(page.getByRole("heading", { level: 2, name: "中正路路燈故障" })).toBeVisible();
+  await expect(page.locator(".case-status")).toHaveText("未處理");
   await expect(page.getByRole("heading", { level: 2, name: "板橋垃圾堆置" })).toHaveCount(0);
 });

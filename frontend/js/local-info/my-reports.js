@@ -49,7 +49,7 @@
       reportedAt: formatDate(record.reportedAt || record.reported_at || record.createdAt || record.created_at),
       iso: isoDate(record.iso || record.reported_at || record.created_at),
       place: location,
-      status: record.status_label || ({ pending: "待處理", reported: "已通報", "in-progress": "處理中", resolved: "已完成" })[record.status] || record.status || "處理中",
+      status: window.caseStatusLabel(record.status, record.status_label),
       detail: record.detail || record.description || "未提供事件描述"
     };
   }
@@ -94,7 +94,7 @@
 
   function watchNextBatch() {
     if (observer) observer.disconnect();
-    if (finished) return;
+    if (finished || window.ReportFilters.active()) return;
     if (!window.IntersectionObserver) {
       retry.textContent = "載入更多紀錄";
       retry.hidden = false;
@@ -122,23 +122,27 @@
         count.textContent = loaded ? "已顯示全部 " + loaded + " 筆申報紀錄" : "目前沒有申報紀錄";
         status.textContent = "";
         if (observer) observer.disconnect();
+        window.ReportFilters.refresh(true);
         return;
       }
-      batch.map(normalizeCase).forEach(function (record) { list.appendChild(makeCard(record)); });
+      batch.map(normalizeCase).forEach(function (record) { window.ReportFilters.add(record, makeCard(record)); });
       loaded += batch.length;
       count.textContent = "目前顯示 " + loaded + " 筆申報紀錄";
       finished = result && typeof result.hasMore === "boolean" ? !result.hasMore : batch.length < pageSize;
       status.textContent = finished ? "已顯示全部申報紀錄" : "";
+      window.ReportFilters.refresh(finished);
       if (!finished) watchNextBatch();
-    }).catch(function () {
+    }).catch(function (error) {
       status.dataset.error = "true";
-      status.textContent = "目前無法取得您的申報紀錄，請稍後重試。";
+      status.textContent = error.status === 401 && window.CommunityAuth.isTester()
+        ? error.message : "目前無法取得您的申報紀錄，請稍後重試。";
       retry.textContent = "重試載入";
       retry.hidden = false;
     }).finally(function () {
       loading = false;
       indicator.hidden = true;
       list.removeAttribute("aria-busy");
+      if (!finished && window.ReportFilters.active() && retry.hidden) loadNextBatch();
     });
   }
 
@@ -147,6 +151,11 @@
       if (entries.some(function (entry) { return entry.isIntersecting; })) loadNextBatch();
     }, { rootMargin: "0px", threshold: 0.8 });
   } else retry.hidden = false;
+  window.ReportFilters.onChange(function () {
+    window.ReportFilters.refresh(finished);
+    if (window.ReportFilters.active()) loadNextBatch();
+    else watchNextBatch();
+  });
   retry.addEventListener("click", loadNextBatch);
   window.CommunityAuth.initialize("protected").then(function (user) {
     if (user) loadNextBatch();
