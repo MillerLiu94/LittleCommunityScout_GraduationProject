@@ -351,10 +351,10 @@ curl -k https://cachyos-x8664.tail3babf5.ts.net/api/runtime-config.js
 ### GET /api/auth/line/callback
 
 - LINE 導回後驗證 `state`、交換 token、取得 LINE profile。
-- 以 `users.line_user_id` 對應使用者；第一次登入會建立 resident 帳號。
+- 以 LINE userId 直接對應 `users.account`；第一次登入會建立 resident 帳號。
 - 成功：`302` 導回 `FRONTEND_BASE_URL + LINE_LOGIN_SUCCESS_PATH`，並附上實際 `role`。
 - 失敗：`302` 導回 `LINE_LOGIN_FAILURE_PATH`，附上 `reason`。
-- `is_suspended=true` 或選 staff 但 `is_staff=false` 會拒絕登入。
+- 選 staff 但 `is_staff=false` 會拒絕登入。
 
 ### GET /api/auth/me
 
@@ -365,7 +365,7 @@ curl -k https://cachyos-x8664.tail3babf5.ts.net/api/runtime-config.js
 
 - 清除 session cookie，回 `200 { "ok": true }`。
 
-> 工作人員必須在 `users` 表預先設為 `is_staff=true`，並可選擇先把該帳號的 `line_user_id` 綁到本人的 LINE userId。`role=staff` 只是前端選項，不是授權依據。
+> 工作人員必須在 `users` 表預先將對應 LINE userId 的 `account` 設為 `is_staff=true`。`role=staff` 只是前端選項，不是授權依據。
 >
 > 請用 HTTPS 網址（例如 Tailscale 的 `https://cachyos-x8664.tail3babf5.ts.net`）登入；直接開 `http://127.0.0.1:8000` 時 `Secure` cookie 不會保存，callback 會失敗。LINE Developers Console 的 Callback URL 必須與 `LINE_LOGIN_REDIRECT_URI` 完全一致。
 

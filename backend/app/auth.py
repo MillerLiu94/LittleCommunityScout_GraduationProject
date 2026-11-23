@@ -23,7 +23,7 @@ from app.config import (
 )
 from app.db import engine
 
-_USER_COLUMNS = "account, name, is_staff, is_suspended, line_user_id"
+_USER_COLUMNS = "account, name, is_staff"
 
 
 class LineLoginError(Exception):
@@ -36,7 +36,6 @@ class AuthUser:
     name: str
     role: str
     is_staff: bool
-    is_suspended: bool
 
 
 def line_login_configured() -> bool:
@@ -122,20 +121,15 @@ def fetch_profile(access_token: str) -> dict:
     return payload
 
 
-def _select_user(connection, *, line_user_id: str | None = None, account: str | None = None):
-    if line_user_id is not None:
-        sql = f"SELECT {_USER_COLUMNS} FROM users WHERE line_user_id = :line_user_id"
-        params = {"line_user_id": line_user_id}
-    elif account is not None:
-        sql = f"SELECT {_USER_COLUMNS} FROM users WHERE account = :account"
-        params = {"account": account}
-    else:
-        return None
-    return connection.execute(text(sql), params).mappings().first()
+def _select_user(connection, account: str):
+    return connection.execute(
+        text(f"SELECT {_USER_COLUMNS} FROM users WHERE account = :account"),
+        {"account": account},
+    ).mappings().first()
 
 
 def find_or_create_user(line_user_id: str, display_name: str) -> AuthUser:
-    """以 LINE userId 對應 users.line_user_id；第一次登入自動建立 resident。"""
+    """以 LINE userId 對應 users.account；第一次登入自動建立 resident。"""
     uid = (line_user_id or "").strip()
     if not uid:
         raise LineLoginError("missing_line_user_id")
@@ -144,42 +138,25 @@ def find_or_create_user(line_user_id: str, display_name: str) -> AuthUser:
     name = name[:100]
 
     with engine.begin() as connection:
-        row = _select_user(connection, line_user_id=uid)
-        if row is None:
-            row = _select_user(connection, account=uid)
+        row = _select_user(connection, uid)
 
         if row is None:
             # account 必須符合 users.chk_account_alphanumeric；LINE userId 是 U + 32 hex。
             row = connection.execute(
                 text(
                     "INSERT INTO users "
-                    "(account, name, is_suspended, is_staff, line_user_id) "
-                    "VALUES (:account, :name, false, false, :line_user_id) "
-                    "ON CONFLICT DO NOTHING "
+                    "(account, name, is_staff) "
+                    "VALUES (:account, :name, false) "
+                    "ON CONFLICT (account) DO NOTHING "
                     f"RETURNING {_USER_COLUMNS}"
                 ),
-                {"account": uid, "name": name, "line_user_id": uid},
+                {"account": uid, "name": name},
             ).mappings().first()
             if row is None:
                 # 併發登入或 account 已存在；重新查一次，避免交易被 unique violation 中止。
-                row = _select_user(connection, line_user_id=uid) or _select_user(
-                    connection, account=uid
-                )
+                row = _select_user(connection, uid)
                 if row is None:
                     raise LineLoginError("user_create_failed")
-
-        if row["line_user_id"] is None:
-            connection.execute(
-                text(
-                    "UPDATE users SET line_user_id = :line_user_id "
-                    "WHERE account = :account"
-                ),
-                {"line_user_id": uid, "account": row["account"]},
-            )
-            row = dict(row)
-            row["line_user_id"] = uid
-        elif row["line_user_id"] != uid:
-            raise LineLoginError("account_already_linked")
 
         if row["name"] != name:
             connection.execute(
@@ -194,7 +171,6 @@ def find_or_create_user(line_user_id: str, display_name: str) -> AuthUser:
         name=row["name"],
         role="staff" if row["is_staff"] else "resident",
         is_staff=bool(row["is_staff"]),
-        is_suspended=bool(row["is_suspended"]),
     )
 
 
@@ -203,13 +179,7 @@ def get_user_by_account(account: str) -> AuthUser | None:
     if not account:
         return None
     with engine.connect() as connection:
-        row = connection.execute(
-            text(
-                "SELECT account, name, is_staff, is_suspended "
-                "FROM users WHERE account = :account"
-            ),
-            {"account": account},
-        ).mappings().first()
+        row = _select_user(connection, account)
     if row is None:
         return None
     return AuthUser(
@@ -217,7 +187,6 @@ def get_user_by_account(account: str) -> AuthUser | None:
         name=row["name"],
         role="staff" if row["is_staff"] else "resident",
         is_staff=bool(row["is_staff"]),
-        is_suspended=bool(row["is_suspended"]),
     )
 
 

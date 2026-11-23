@@ -241,7 +241,7 @@ def current_user(request: Request) -> dict:
         user = get_user_by_account(str(account))
     except SQLAlchemyError as exc:
         raise HTTPException(status_code=503, detail="登入驗證暫時無法使用。") from exc
-    if user is None or user.is_suspended:
+    if user is None:
         request.session.clear()
         raise HTTPException(status_code=401, detail="登入已失效，請重新登入。")
     role = resolve_session_role(request.session.get("role"), user.is_staff)
@@ -250,7 +250,6 @@ def current_user(request: Request) -> dict:
         "name": user.name,
         "role": role,
         "is_staff": user.is_staff,
-        "is_suspended": user.is_suspended,
     }
 
 
@@ -322,8 +321,6 @@ def line_callback(
         print(f"[auth] LINE 登入失敗: {type(exc).__name__}", flush=True)
         return RedirectResponse(failure_redirect("line_error"), status_code=302)
 
-    if user.is_suspended:
-        return RedirectResponse(failure_redirect("suspended"), status_code=302)
     if requested_role == "staff" and not user.is_staff:
         return RedirectResponse(failure_redirect("not_staff"), status_code=302)
 
@@ -332,7 +329,6 @@ def line_callback(
     request.session["account"] = user.account
     request.session["name"] = user.name
     request.session["role"] = session_role
-    request.session["line_user_id"] = str(profile["userId"])
     request.session["authenticated_at"] = int(time.time())
     return RedirectResponse(success_redirect(session_role), status_code=302)
 

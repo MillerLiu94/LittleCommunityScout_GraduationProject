@@ -8,8 +8,8 @@ from app.auth import AuthUser
 from app import server
 
 
-RESIDENT = AuthUser("Uresident", "住戶", "resident", False, False)
-STAFF = AuthUser("Ustaff", "工作人員", "staff", True, False)
+RESIDENT = AuthUser("Uresident", "住戶", "resident", False)
+STAFF = AuthUser("Ustaff", "工作人員", "staff", True)
 
 
 def make_client() -> TestClient:
@@ -132,29 +132,6 @@ class LineLoginFlowTests(unittest.TestCase):
         query = parse_qs(urlsplit(callback.headers["location"]).query)
         self.assertEqual(query["login"], ["failed"])
         self.assertEqual(query["reason"], ["invalid_state"])
-
-    def test_suspended_account_is_rejected(self):
-        client = make_client()
-        start_login(client)
-        suspended = AuthUser("Uresident", "住戶", "resident", False, True)
-
-        with (
-            patch.object(server, "line_login_configured", return_value=True),
-            patch.object(server, "exchange_code", return_value={"access_token": "token"}),
-            patch.object(
-                server,
-                "fetch_profile",
-                return_value={"userId": "Uresident", "displayName": "住戶"},
-            ),
-            patch.object(server, "find_or_create_user", return_value=suspended),
-        ):
-            callback = client.get(
-                "/api/auth/line/callback?code=code&state=state-value",
-                follow_redirects=False,
-            )
-
-        query = parse_qs(urlsplit(callback.headers["location"]).query)
-        self.assertEqual(query["reason"], ["suspended"])
 
 
 class ProtectedEndpointTests(unittest.TestCase):

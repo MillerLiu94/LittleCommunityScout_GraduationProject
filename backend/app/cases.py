@@ -16,14 +16,13 @@ _CASE_COLUMNS = (
 def _ensure_user(connection, account: str) -> None:
     """帳號第一次通報時自動建立 resident 身份，避免 cases 外鍵失敗。
 
-    依現有 users 表結構（account 為 PK，另有 is_suspended / is_staff 非空欄位）；
-    密碼／角色欄位該表不存在，之後做登入／註冊再依正規化 schema 補。
+    依現有 users 表結構（account 為 PK，另有 name / is_staff 非空欄位）；
     注意 users.chk_account_alphanumeric 只允許 [A-Za-z0-9]+。
     """
     connection.execute(
         text(
-            "INSERT INTO users (account, name, is_suspended, is_staff) "
-            "VALUES (:account, :account, false, false) "
+            "INSERT INTO users (account, name, is_staff) "
+            "VALUES (:account, :account, false) "
             "ON CONFLICT (account) DO NOTHING"
         ),
         {"account": account},
