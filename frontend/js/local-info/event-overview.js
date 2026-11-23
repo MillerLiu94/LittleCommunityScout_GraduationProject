@@ -12,9 +12,6 @@
   var finished = false;
   var observer;
 
-  function statusLabel(value) {
-    return ({ reported: "已通報", "in-progress": "處理中", resolved: "已完成", pending: "待處理" })[value] || value || "處理中";
-  }
   function normalizeEvent(event) {
     var reportedAt = event.reportedAt || "";
     var date = reportedAt ? new Date(reportedAt) : null;
@@ -26,7 +23,7 @@
       date: event.timeText || (date && !isNaN(date.getTime()) ? new Intl.DateTimeFormat("zh-TW", { dateStyle: "medium", timeStyle: "short" }).format(date) : "時間未提供"),
       iso: date && !isNaN(date.getTime()) ? date.toISOString() : "",
       place: event.placeText || "地點未提供",
-      status: statusLabel(event.status),
+      status: window.caseStatusLabel(event.status, event.status_label),
       detail: event.description || "尚未提供事件說明。",
       photo: window.CommunityApi.assetUrl(event.photo),
     };

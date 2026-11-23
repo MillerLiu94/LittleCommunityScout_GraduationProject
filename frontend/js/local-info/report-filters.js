@@ -43,6 +43,6 @@
     active: active,
     refresh: refresh,
     onChange: function (callback) { changed = callback; },
-    add: function (record, card) { records.push({ record: record, card: card }); addOption(status, record.status); addOption(category, record.category); list.appendChild(card); }
+    add: function (record, card) { records.push({ record: record, card: card }); addOption(category, record.category); list.appendChild(card); }
   };
 })(window);

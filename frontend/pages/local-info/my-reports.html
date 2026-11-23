@@ -36,7 +36,7 @@
       <h1>我的申報事件</h1>
       <p class="page-description">查看由目前帳號送出的事件與處理進度。</p>
       <form class="report-filters" id="report-filters" aria-label="篩選申報紀錄">
-        <label>案件狀態<select class="select select-bordered" id="filter-status"><option value="">全部狀態</option></select></label>
+        <label>案件狀態<select class="select select-bordered" id="filter-status"><option value="">全部狀態</option><option>未處理</option><option>處理中</option><option>已結案</option></select></label>
         <label>事件類別<select class="select select-bordered" id="filter-category"><option value="">全部類別</option></select></label>
         <label class="filter-search">關鍵字<input class="input input-bordered" id="filter-keyword" type="search" placeholder="搜尋事件、地點或描述"></label>
         <button class="btn filter-copy" id="copy-filter" type="button">複製篩選條件</button>
@@ -75,6 +75,7 @@
   <script src="../../js/chat/chat-multimodal.js"></script>
   <script src="../../js/chat/chat-page.js"></script>
   <script src="../../js/local-info/report-filters.js"></script>
+  <script src="../../js/local-info/case-status.js"></script>
   <script src="../../js/local-info/my-reports.js"></script>
   <script src="../../js/local-info/report-assistant.js"></script>
 </body>

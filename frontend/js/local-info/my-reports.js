@@ -49,7 +49,7 @@
       reportedAt: formatDate(record.reportedAt || record.reported_at || record.createdAt || record.created_at),
       iso: isoDate(record.iso || record.reported_at || record.created_at),
       place: location,
-      status: record.status_label || ({ pending: "待處理", reported: "已通報", "in-progress": "處理中", resolved: "已完成" })[record.status] || record.status || "處理中",
+      status: window.caseStatusLabel(record.status, record.status_label),
       detail: record.detail || record.description || "未提供事件描述"
     };
   }

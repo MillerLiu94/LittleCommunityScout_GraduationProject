@@ -12,9 +12,6 @@
   var busy = false;
   var region = "";
 
-  function statusLabel(value) {
-    return ({ reported: "已通報", "in-progress": "處理中", resolved: "已完成", pending: "待處理" })[value] || value || "處理中";
-  }
   function normalize(record) {
     var reportedAt = record.reportedAt || "";
     var date = reportedAt ? new Date(reportedAt) : null;
@@ -25,7 +22,7 @@
       date: record.timeText || (date && !isNaN(date.getTime()) ? new Intl.DateTimeFormat("zh-TW", { dateStyle: "medium", timeStyle: "short" }).format(date) : "通報時間未提供"),
       iso: date && !isNaN(date.getTime()) ? date.toISOString() : "",
       place: record.placeText || "未提供地點",
-      status: statusLabel(record.status),
+      status: window.caseStatusLabel(record.status, record.status_label),
       detail: record.description || "尚未提供事件說明。",
     };
   }
