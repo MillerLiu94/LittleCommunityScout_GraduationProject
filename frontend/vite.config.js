@@ -2,12 +2,12 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { defineConfig, loadEnv } from "vite";
 
-const previewRoot = path.dirname(fileURLToPath(import.meta.url));
-const siteRoot = path.resolve(previewRoot, "..");
-const projectDirectory = path.basename(previewRoot);
+const frontendRoot = path.dirname(fileURLToPath(import.meta.url));
+const siteRoot = path.resolve(frontendRoot, "..");
+const projectDirectory = path.basename(frontendRoot);
 
 export default defineConfig(({ mode }) => {
-  const env = loadEnv(mode, previewRoot, "");
+  const env = loadEnv(mode, frontendRoot, "");
   const configuredApi = env.API_BASE_URL;
   if (!configuredApi) throw new Error("Set API_BASE_URL in .env.");
 
@@ -21,23 +21,17 @@ export default defineConfig(({ mode }) => {
 
   return {
     root: siteRoot,
-    envDir: previewRoot,
+    envDir: frontendRoot,
     plugins: [
       {
-        name: "preview-root-redirect",
+        name: "frontend-root-redirect",
         configureServer(server) {
           server.middlewares.use((req, res, next) => {
             const requestPath = req.url?.split("?", 1)[0];
             const query = req.url?.includes("?") ? req.url.slice(req.url.indexOf("?")) : "";
-            if (requestPath === "/" || requestPath === "/preview" || requestPath === "/preview/") {
+            if (requestPath === "/") {
               res.statusCode = 302;
               res.setHeader("Location", `/${projectDirectory}/index.html` + query);
-              res.end();
-              return;
-            }
-            if (projectDirectory !== "preview" && requestPath?.startsWith("/preview/")) {
-              res.statusCode = 302;
-              res.setHeader("Location", `/${projectDirectory}/${requestPath.slice("/preview/".length)}` + query);
               res.end();
               return;
             }

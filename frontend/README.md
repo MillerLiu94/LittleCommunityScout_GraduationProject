@@ -30,13 +30,13 @@ GitHub repository：[MillerLiu94/LCS_project](https://github.com/MillerLiu94/LCS
 ## 本機啟動
 
 ```powershell
-git clone https://github.com/MillerLiu94/LCS_project.git preview
-cd preview
+git clone https://github.com/MillerLiu94/LCS_project.git
+cd LCS_project/frontend
 npm ci
 Copy-Item .env.example .env
 ```
 
-請保留資料夾名稱 `preview`；目前 Vite 設定會從此資料夾的上一層提供 `/preview/` 網址。
+Vite 會從 `frontend` 的上一層提供網站，首頁網址為 `/frontend/index.html`。
 
 編輯 `.env`，至少設定後端網址：
 
